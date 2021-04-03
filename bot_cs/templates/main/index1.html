@@ -1,0 +1,104 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </head>
+    <body><div id="app">
+        <div class="header">
+            <div class="header__nav">
+                <a href="{% url 'items' %}"><div class="header__nav-item">Item</div></a>
+                <div class="header__nav-item active">Accounts</div>
+                <a href="{% url 'logs' %}"><div class="header__nav-item">Logs</div></a>
+                <a href="{% url 'setting' %}"><div class="header__nav-item">Setting</div></a>
+            </div>
+            <div class="header__login">
+                <div class="header__login-wrap">
+                    <a href="{% url 'logout' %}"><i class="fa fa-logout"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+        <transition name='bounce'>
+        <div class="accounts-editor" v-if='editor' >
+            <div class="accounts-editor__body" >
+                <div class="accounts-editor__body-title">
+                    <div class="accounts-editor__body-title__wrapper">
+                        Accounts Editor
+                    </div>
+                </div>
+                <div class="accounts-editor__body-example">Пример ввода данных: [“comments”:””,”login”:””,”pass”:””,”steamID”:””,”shared_secret”:”=”,”steamAPI”:””,”googleDriveId”:””,”proxy”:””]</div>
+                <form action="{% url 'save' %}" method="post" class="formSave" >
+                <input type='hidden' name='csrfmiddlewaretoken' value='randomchars' />
+                <div class="accounts-editor__body-textarea">
+<!--                   <span v-for='event in events' style="display: none;"><p class="cont">[[ event.login ]]   -   [[event.steamid]]</p></span>-->
+                    <textarea name="edit" cols="70" rows="20" id='myTextarea' ></textarea>
+                </div>
+                <div class="accounts-editor__body-btns">
+                    <div class="btn-save"><div class="btn-save-wrapper" @click='saveChanges'>Save</div></div>
+                    <div class="btn-cancel"><div class="btn-cancel-wrapper" @click='editorClose'>Cancel</div></div>
+                </div>
+                </form>
+            </div>
+        </div>
+        </transition>
+        <div class="body">
+            <div class="body__btn">
+                <div class="btn__wrapper" v-on:click='editorF'>
+                    Account Editor
+                </div>
+            </div>
+            <div class="body__main">
+                <table>
+                  <tr><th>№</th><th>Коментарий</th><th>Логин</th><th>On/Off</th></tr>
+                  {% for i in bots %}
+                  {% if i.turn == True %}
+                      <tr><td>{{ forloop.counter }}</td><td>{{i.comment}}</td><td>{{ i.login }}</td><td><label class="switch"><input type="checkbox"  class='checkBot' data-login='{{ i.login }}' checked><span class="slider round"></span></label></td></tr>
+                  {% else %}
+                      <tr><td>{{ forloop.counter }}</td><td>{{i.comment}}</td><td>{{ i.login }}</td><td><label class="switch"><input type="checkbox"  class='checkBot' data-login='{{ i.login }}' ><span class="slider round"></span></label></td></tr>
+                  {% endif %}
+
+                  {% endfor %}
+<!--
+                  <tr><td>2</td><td>Мардж</td><td>Симпсон</td><td><label class="switch"><input type="checkbox" ><span class="slider round"></span></label></td></tr>
+                  <tr><td>3</td><td>Барт</td><td>Симпсон</td><td><label class="switch"><input type="checkbox" ><span class="slider round"></span></label></td></tr>
+                  <tr><td>4</td><td>Лиза</td><td>Симпсон</td><td><label class="switch"><input type="checkbox" ><span class="slider round"></span></label></td></tr>
+-->
+                </table>
+            </div>
+
+            <div class="paginator">
+                <div class="paginator-before arrow"><<</div>
+                <div class="paginator-first item">1</div>
+                <div class="pagintor-between">...</div>
+                <div class="paginator__items">
+                    <div class="paginator-item item">5</div>
+                    <div class="paginator-item item">6</div>
+                    <div class="paginator-item item">7</div>
+                    <div class="paginator-item item">8</div>
+                    <div class="paginator-item item">9</div>
+                </div>
+                <div class="pagintor-between">...</div>
+                <div class="paginator-last item">13</div>
+                <div class="paginator-after arrow">>></div>
+            </div>
+        </div>
+
+        </div>
+
+        <script>
+            axios.defaults.xsrfCookieName = 'csrftoken';
+            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+            var instance = axios.create({
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: "X-CSRFTOKEN",
+            });
+        </script>
+        <script src="{% static 'script.js' %}"></script>
+    </body>
+</html>

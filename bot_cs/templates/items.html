@@ -1,0 +1,166 @@
+{% load static %}
+   <html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    </head>
+    <body><div id="app">
+        <div class="header">
+            <div class="header__nav">
+                <div class="header__nav-item active">Item</div>
+                <a href="{% url 'main' %}"><div class="header__nav-item">Accounts</div></a>
+                <a href="{% url 'logs' %}"><div class="header__nav-item ">Logs</div></a>
+                <a href="{% url 'setting' %}"><div class="header__nav-item">Setting</div></a>
+            </div>
+            <div class="header__login">
+                <div class="header__login-wrap">
+                    <a href="{% url 'logout' %}"><i class="fa fa-logout"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="body">
+           
+            <div class="body__filters">
+               <div class="filter__bots">
+                    <form>
+                      <input type="reset" class="reset" value="All bots" />
+                      <div class="__select" data-state="">
+                        <div class="__select__title" data-default="All"><a href="{% url 'items' %}">All</a></div>
+                        <div class="__select__content">
+                          <input id="singleSelect0" class="__select__input" type="radio" value='all' name="singleSelect" checked />
+                          <label for="singleSelect0" class="__select__label">All</label>
+                          {% for i in bots %}
+                          <input id="singleSelect1" class="__select__input" type="radio" value='{{ i.login }}' name="singleSelect" />
+                            <label for="singleSelect1" class="__select__label"><a href="{% url 'items_for' i.login %}">{{ i.login }}</a></label>
+                          {% endfor %}
+
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                <form action="{% url 'items' %}" method="post">
+                {% csrf_token %}
+                <div class="filter__search-date">
+                   Hold
+                    <div style="display: flex;">
+                        <div class=""><input type="text" name="daterange" value="0" style='padding: 0px 15px;line-height: 34px;border: 1px solid #999;'/></div>
+                        <div class="clear">
+                            <input type="reset">
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__search-date">
+                    Date
+                    <div style="display: flex;">
+                        <div class=""><input type="text" name="daterange1" value="0" style='padding: 0px 15px;line-height: 34px;border: 1px solid #999;'/></div>
+                        <div class="clear">
+                            <input type="reset">
+                        </div>
+                    </div>
+                </div>
+                    Place
+                <div class="filter__place">
+                
+<!--                   <form action="">-->
+                    <div class="form_radio_group">
+                        <div class="form_radio_group-item">
+                            <input id="radio-1" type="radio" name="radio" value="1" checked>
+                            <label for="radio-1">All(500)</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radio-2" type="radio" name="radio" value="2">
+                            <label for="radio-2">Drive(491)</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radio-3" type="radio" name="radio" value="3">
+                            <label for="radio-3">WrongName(5)</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radio-4" type="radio" name="radio" value="3">
+                            <label for="radio-4">Not Determined(9)</label>
+                        </div>
+                    </div>
+<!--                    </form>-->
+                </div>
+                Status
+                <div class="filter__status">
+                
+<!--                   <form action="">-->
+                    <div class="form_radio_group">
+                        <div class="form_radio_group-item">
+                            <input id="radiostatus-1" type="radio" name="radio1" value="1" checked>
+                            <label for="radiostatus-1">All(500)</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radiostatus-2" type="radio" name="radio1" value="2">
+                            <label for="radiostatus-2">New(20)</label>
+                        </div>
+
+                        <div class="form_radio_group-item">
+                            <input id="radiostatus-3" type="radio" name="radio1" value="3">
+                            <label for="radiostatus-3">NotAtInventory(250)</label>
+                        </div>
+                    </div>
+<!--                    </form>-->
+                </div>
+                Hold
+                <div class="filter__hold">
+                
+<!--                   <form action="">-->
+                    <div class="form_radio_group">
+                        <div class="form_radio_group-item">
+                            <input id="radiohold-1" type="radio" name="radio2" value="1" checked>
+                            <label for="radiohold-1">All(500)</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radiohold-2" type="radio" name="radio2" value="2">
+                            <label for="radiohold-2">NotAtHold(20)</label>
+                        </div>
+
+                        <div class="form_radio_group-item">
+                            <input id="radiohold-3" type="radio" name="radio2" value="3">
+                            <label for="radiohold-3">Hold(250)</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <input type="submit" value='Отфильтровать'>
+            </form>
+
+            </div>
+            <div class="body__main">
+                <table>
+                  <tr><th>№</th><th>Bot</th><th>Items</th><th>Drive Price</th><th>D.time</th><th>Steam</th><th>S.time</th><th>Min profit</th><th>Min. time</th><th>Max profit</th><th>Max. time</th><th>Hold off</th><th>Status</th><th>Place</th><th>AssedID</th><th>D.discount</th></tr>
+                  {% for i in posts %}
+                  <tr><td>{{ forloop.counter }}</td><td>{{ i.bot }}</td><td>{{ i.name }}</td><td>{{ i.drive_price }}</td><td>{{ i.d_time }}</td><td>{{ i.steam }}</td><td>{{ i.s_time }}</td><td>{{ i.min_profit }}</td><td>{{ i.min_time }}</td><td>{{ i.max_profit }}</td><td>{{ i.max_time }}</td><td>{{ i.hold_off }}</td><td>{{ i.status }}</td><td>{{ i.place }}</td><td>{{ i.assedID }}</td><td>{{ i.d_discount }}</td></tr>
+                  {% endfor %}
+<!--
+                  <tr><td>2</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+                  <tr><td>3</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+                  <tr><td>4</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+-->
+                </table>
+            </div>
+
+            {% include "pagination.html" with page=posts %}
+        </div>
+
+        </div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="{% static 'script.js' %}"></script>
+        <script>
+
+        </script>
+    </body>
+</html>

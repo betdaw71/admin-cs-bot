@@ -1,0 +1,45 @@
+{% load static %}
+   <html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+
+    </head>
+    <body><div id="app">
+        <div class="header">
+            <div class="header__nav">
+                <a href="{% url 'items' %}"><div class="header__nav-item">Item</div></a>
+                <a href="{% url 'main' %}"><div class="header__nav-item">Accounts</div></a>
+                <a href="{% url 'logs' %}"><div class="header__nav-item ">Logs</div></a>
+                <div class="header__nav-item active">Setting</div>
+            </div>
+            <div class="header__login">
+                <div class="header__login-wrap">
+                    <a href=""><i class="fa fa-logout"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="body">
+          <form class="" action="/setting/save/" method="post">
+            {% csrf_token %}
+
+            <input type="text" name="min_p" value="{{ min_p }}" placeholder="Min. Profit">
+            <input type="text" name="max_p" value="{{ max_p }}" placeholder="Max. Profit">
+            <input type="submit" name="" value="Сохранить">
+
+          </form>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="{% static 'script.js' %}"></script>
+        <script>
+
+        </script>
+    </body>
+</html>

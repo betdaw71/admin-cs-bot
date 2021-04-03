@@ -1,0 +1,74 @@
+<div class="paginator">
+  {% if page.has_previous %}
+      <div class="paginator-before arrow"><a href="" class='prev'><<</a></div>
+  {% endif %}
+
+    <!-- <div class="paginator-first item">1</div> -->
+    <!-- <div class="pagintor-between">...</div> -->
+    <div class="paginator__items">
+
+        {% for num in page.paginator.page_range %}
+        {% if num == page.number %}
+            <div class="paginator-item item"><span class="current"><b>{{ num }}</b></span></div>
+
+        {% endif %}
+    {% endfor %}
+    </div>
+    <!-- <div class="pagintor-between">...</div> -->
+    <!-- <div class="paginator-last item"><a href="?page={{ page.first }}">13</a></div> -->
+    {% if page.has_next %}
+          <div class="paginator-after arrow"><a href="" class='next'>>></a></div>
+    {% endif %}
+    <a href='' class='num100'>100 </a>/
+    <a href='' class='num1000'>1000 </a>/
+    <a href='' class='num5000'>5000 </a>
+</div>
+<script>
+    var paramsString = document.location.search; // ?page=4&limit=10&sortby=desc  
+     var searchParams = new URLSearchParams(paramsString);
+    {% if page.has_next %}
+    
+     if (searchParams != ''){
+         
+         if(searchParams.has('page')){
+             console.log(document.location.search)
+             a = document.querySelector('.next').href=document.location.search.replaceAll('page={{page.number}}','page={{ page.next_page_number }}');
+         }else{
+            a = document.querySelector('.next').href=document.location.search+'&page='+'{{ page.next_page_number }}';
+         }
+     }else{
+         a = document.querySelector('.next').href=document.location.search+'?page='+'{{ page.next_page_number }}';
+     }
+    {% endif %}
+    {% if page.has_previous %}
+      var paramsString = document.location.search; // ?page=4&limit=10&sortby=desc  
+     var searchParams = new URLSearchParams(paramsString);
+     if (searchParams != ''){
+         if(searchParams.has('page')){
+             a = document.querySelector('.prev').href=document.location.search.replaceAll('&page={{page.number}}','&page={{ page.previous_page_number }}');
+
+         }else{
+            a = document.querySelector('.prev').href=document.location.search+'&page={{ page.previous_page_number }}';
+         }
+        }else{
+         a = document.querySelector('.prev').href=document.location.search+'?page='+'{{ page.previous_page_number }}';
+     }
+  {% endif %}
+  if (searchParams != ''){
+    if(searchParams.has('num')){
+        b = document.querySelector('.num100').href = document.location.search.replaceAll('num='+searchParams.get('num'),'num=100');
+        c = document.querySelector('.num1000').href = document.location.search.replaceAll('num='+searchParams.get('num'),'num=1000');
+        d = document.querySelector('.num5000').href = document.location.search.replaceAll('num='+searchParams.get('num'),'num=5000');
+    }
+   else{
+       b = document.querySelector('.num100').href = document.location.search+'&num=100';
+       c = document.querySelector('.num1000').href = document.location.search+'&num=1000';
+        d = document.querySelector('.num5000').href = document.location.search+'&num=5000';
+   }}
+      else{
+          b = document.querySelector('.num100').href = document.location.search+'?num=100';
+       c = document.querySelector('.num1000').href = document.location.search+'?num=1000';
+        d = document.querySelector('.num5000').href = document.location.search+'?num=5000';
+      }
+//});
+</script>

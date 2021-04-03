@@ -1,0 +1,122 @@
+{% load static %}
+   <html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    </head>
+    <body><div id="app">
+        <div class="header">
+            <div class="header__nav">
+                <a href="{% url 'items' %}"><div class="header__nav-item">Item</div></a>
+                <a href="{% url 'main' %}"><div class="header__nav-item">Accounts</div></a>
+                <div class="header__nav-item active">Logs</div>
+                <a href="{% url 'setting' %}"><div class="header__nav-item">Setting</div></a>
+            </div>
+            <div class="header__login">
+                <div class="header__login-wrap">
+                    <a href=""><i class="fa fa-logout"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="body">
+            <div class="body__filters">
+<!--               <form action="" method="get">-->
+                
+                <div class="filter__bots" style="display: flex">
+                     <div class="">
+                         <input type="reset" class="reset" value="All bots" /></div>
+                      <div class="__select" data-state="">
+                        <div class="__select__title" data-default="All"><a href="{% url 'logs' %}">All</a></div>
+                        <div class="__select__content">
+                          <input id="singleSelect0" class="__select__input" type="radio" value='all' name="singleSelect" checked />
+                          <label for="singleSelect0" class="__select__label">All</label>
+                          {% for i in bots %}
+                          <input id="singleSelect1" class="__select__input" type="radio" value='{{ i.login }}' name="singleSelect" />
+                            <label for="singleSelect1" class="__select__label"><a href="{% url 'logs_for' i.login %}">{{ i.login }}</a></label>
+                          {% endfor %}
+
+                        </div>
+                      </div>
+                </div>
+                <form action="{% url 'logs_for' login %}" method="get">
+                <div class="filter__default">
+                   
+                    <div class="form_radio_group">
+                        <div class="form_radio_group-item">
+                            <input id="radio-1" type="radio" name="first" value="all" checked>
+                            <label for="radio-1">All</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radio-2" type="radio" name="first" value="bots">
+                            <label for="radio-2">Bots</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radio-3" type="radio" name="first" value="others">
+                            <label for="radio-3">Others</label>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="filter__Logs">
+                   
+                    <div class="form_radio_group">
+                        <div class="form_radio_group-item">
+                            <input id="radiologs-1" type="radio" name="third" value="all" checked>
+                            <label for="radiologs-1">All Logs</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radiologs-2" type="radio" name="third" value="steam">
+                            <label for="radiologs-2">steam</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radiologs-3" type="radio" name="third" value="proxy">
+                            <label for="radiologs-3">proxy</label>
+                        </div>
+                        <div class="form_radio_group-item">
+                            <input id="radiologs-4" type="radio" name="third" value="others">
+                            <label for="radiologs-4">others</label>
+                        </div>
+                    </div>
+                    <input type="submit" name="" value="Submit">
+                    
+                </div>
+                </form>
+            </div>
+            <div class="body__main">
+                <table>
+                  <tr><th>Bot</th><th>Log time</th><th>Proxy</th><th>Request</th><th>Response</th></tr>
+                  {% for i in posts %}
+                  <tr><td>{{i.bot}}</td><td>{{ i.time }}</td><td>{{ i.proxy }}</td><td>{{ i.request }}</td><td>{{ i.response }}</td><td>{{ i.log_type }}</td></tr>
+                  {% endfor %}
+<!--
+                  <tr><td>lu83vxqwd23c66h09k</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+                  <tr><td>lu83vxqwd23c66h09k</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+                  <tr><td>lu83vxqwd23c66h09k</td><td>25/11 19:58:21</td><td>185.01.421.4:2134:asjbkd</td><td></td><td></td></tr>
+-->
+                </table>
+            </div>
+
+
+
+            {% include "pagination.html" with page=posts %}
+        </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="{% static 'script.js' %}"></script>
+        <script>
+
+        </script>
+    </body>
+</html>
